@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "PrintData";
+}
+@foreach(var a  in ViewData["DataList"] as List<coursedesign.Models.user>)
+{
+    @a.username
+    <br/>
+    @a.password
+}
+<h2>PrintData</h2>
+

@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("管理员登陆", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("添加信息", "AddData", "Home")</li>
+                    <li>@Html.ActionLink("查询信息", "QueryData", "Home")</li>
+                    <li>@Html.ActionLink("删除信息", "DeleteData", "Home")</li>
+                    <li>@Html.ActionLink("修改信息", "AlertData", "Home")</li>
+                    <li>@Html.ActionLink("计算月薪", "CalculateData", "Home")</li>
+                    <li>@Html.ActionLink("保存到本地", "SaveData", "Home")</li>
+                    <li>@Html.ActionLink("清空资料", "ClearData", "Home")</li>
+                    <li>@Html.ActionLink("打印资料", "PrintData", "Home")</li>
+                    <li>@Html.ActionLink("从数据库中重新获取资料", "ReGetData", "Home")</li>
+                    <li>@Html.ActionLink("退出系统", "ExitSys", "Home")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 应用程序</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
