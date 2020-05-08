@@ -23,8 +23,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("添加信息", "AddData", "Home")</li>
                     <li>@Html.ActionLink("查询信息", "QueryData", "Home")</li>
-                    <li>@Html.ActionLink("删除信息", "DeleteData", "Home")</li>
-                    <li>@Html.ActionLink("修改信息", "AlertData", "Home")</li>
+                    <li>@Html.ActionLink("编辑信息", "EditData", "Home")</li>
                     <li>@Html.ActionLink("计算月薪", "CalculateData", "Home")</li>
                     <li>@Html.ActionLink("保存到本地", "SaveData", "Home")</li>
                     <li>@Html.ActionLink("清空资料", "ClearData", "Home")</li>
@@ -38,9 +37,7 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 应用程序</p>
-        </footer>
+
     </div>
 
     @Scripts.Render("~/bundles/jquery")

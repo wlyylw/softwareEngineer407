@@ -1,0 +1,55 @@
+﻿@model engineering
+@{
+    ViewBag.Title = "EditData";
+}
+<style>
+    table, table tr th, table tr td {
+        border: 1px solid #0094ff;
+    }
+
+    table {
+        width: 600px;
+        text-align: center;
+        border-collapse: collapse;
+    }
+</style>
+<h2>编辑工程师信息</h2>
+<body>
+    @using (Html.BeginForm())
+    {
+        <table>
+            <tr>
+                <td>编号</td>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>学历</td>
+                <td>籍贯</td>
+                <td>地址</td>
+                <td>电话</td>
+                <td>工龄</td>
+                <td>工资</td>
+                <td>出生日期</td>
+                <td></td>
+                <td></td>
+            </tr>
+            @foreach (var a in ViewData["DataList"] as List<engineering>)
+            {
+                <tr>
+                    <td>@a.id</td>
+                    <td>@a.name</td>
+                    <td>@a.sex</td>
+                    <td>@a.education</td>
+                    <td>@a.place</td>
+                    <td>@a.address</td>
+                    <td>@a.telephone</td>
+                    <td>@a.workage</td>
+                    <td>@a.salary</td>
+                    <td>@a.birth</td>
+                    <td>@Html.ActionLink("修改", "Modify", new { Cid = a.id })</td>
+                    <td>@Html.ActionLink("删除", "Remove", new { Cid = a.id })</td>
+                </tr>
+            }
+        </table>
+    }
+</body>
+

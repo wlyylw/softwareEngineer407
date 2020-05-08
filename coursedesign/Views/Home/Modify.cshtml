@@ -1,12 +1,10 @@
 ﻿@model engineering
 @{
-    ViewBag.Title = "AddData";
+    ViewBag.Title = "Modify";
 }
-<h2>添加工程师信息</h2>
-<br />
-<br />
-<br />
-@using (Html.BeginForm("AddData", "Home", FormMethod.Post))
+
+<h2>修改信息</h2>
+@using (Html.BeginForm("Modify", "Home", FormMethod.Post))
 {
 
     <text>编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</text>@Html.TextBoxFor(model => model.id)
@@ -39,8 +37,7 @@
     <text>出生日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</text>@Html.TextBoxFor(model => model.birth)
     <br />
     <br />
-    <input type="submit" value="添加" />
-    
+    <input type="submit" value="确认" />
+    @Html.ActionLink("返回", "EditData", "Home")
 }
-
 

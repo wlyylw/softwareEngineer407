@@ -22,7 +22,7 @@
     <Property Name="username" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
   </EntityType>
-  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="Entities1" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="engineering" EntityType="Self.engineering" />
     <EntitySet Name="user" EntityType="Self.user" />
   </EntityContainer>
