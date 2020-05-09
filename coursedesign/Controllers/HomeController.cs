@@ -1,7 +1,9 @@
 ﻿using Microsoft.Ajax.Utilities;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
@@ -117,11 +119,46 @@ namespace coursedesign.Controllers
             return View();
         }
 
-
-
         public ActionResult SaveData()
         {
-            return View();
+            var query = (from u in db.engineering
+                         select new
+                         {
+                             u.id,
+                             u.name,
+                             u.sex,
+                             u.education,
+                             u.place,
+                             u.address,
+                             u.telephone,
+                             u.workage,
+                             u.salary,
+                             u.birth
+                         }).ToList();
+            string p = System.AppDomain.CurrentDomain.BaseDirectory;
+            string sWebRootFolder = p+@"\excels\";
+            string sFileName = $@"{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
+            var path = Path.Combine(sWebRootFolder, sFileName);
+            FileInfo file = new FileInfo(path);
+            if(file.Exists)
+            {
+                file.Delete();
+                file = new FileInfo(path);
+            }
+            ExcelPackage.LicenseContext = LicenseContext.Commercial;
+
+            // If you use EPPlus in a noncommercial context
+            // according to the Polyform Noncommercial license:
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage package = new ExcelPackage(file))
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("UserInfo");
+                worksheet.Cells.LoadFromCollection(query, true);
+                package.Save();
+            }
+
+
+            return Content("保存成功");
         }
         public ActionResult ClearData()
         {

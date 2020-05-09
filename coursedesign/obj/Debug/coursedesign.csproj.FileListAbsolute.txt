@@ -89,3 +89,6 @@ E:\Desktop\softwareEngineer407\coursedesign\bin\EntityFramework.SqlServer.dll
 E:\Desktop\softwareEngineer407\coursedesign\bin\EntityFramework.xml
 E:\Desktop\softwareEngineer407\coursedesign\bin\EntityFramework.SqlServer.xml
 E:\Desktop\softwareEngineer407\coursedesign\bin\zh-Hans\EntityFramework.resources.dll
+E:\Desktop\softwareEngineer407\coursedesign\bin\EPPlus.dll
+E:\Desktop\softwareEngineer407\coursedesign\bin\EPPlus.xml
+E:\Desktop\softwareEngineer407\coursedesign\bin\zh-Hans\EntityFramework.SqlServer.resources.dll
