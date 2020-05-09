@@ -11,7 +11,8 @@ namespace coursedesign
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Configuration;
+
     public partial class engineering
     {
         public Nullable<System.DateTime> birth { get; set; }
@@ -24,5 +25,6 @@ namespace coursedesign
         public string telephone { get; set; }
         public string workage { get; set; }
         public Nullable<int> salary { get; set; }
+
     }
 }

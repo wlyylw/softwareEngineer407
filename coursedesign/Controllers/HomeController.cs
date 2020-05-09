@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -10,14 +11,49 @@ namespace coursedesign.Controllers
 {
     public class HomeController : Controller
     {
-        DataEntity db = new DataEntity();
+        static DataEntity db = new DataEntity();
+        List<engineering> list = (from c in db.engineering select c).ToList();
+
         public ActionResult Index()
         {
             return View();
         }
-
+        [HttpGet]
         public ActionResult QueryData()
         {
+            var listItem = new List<SelectListItem>
+            {
+                new SelectListItem{Text="根据姓名查询",Value="asname"},
+                new SelectListItem{Text="根据编号查询",Value="asid"}
+            };
+            ViewBag.list = new SelectList(listItem, "Value", "Text", "");
+            return View();
+        }
+     
+        public ActionResult ShowQueryData()
+        {
+
+
+            var option = Request.Form["queryOption"];
+
+            if (option.Equals("asname"))
+            {
+                string value = Request.Form["queryType"];
+                List<engineering> list = (from c in db.engineering
+                                          where c.name == value
+                                          select c).ToList();
+                ViewData["QueryList"] = list;
+            }
+            else
+            {
+                int value = Convert.ToInt32( Request.Form["queryType"]);
+                List<engineering> list = (from c in db.engineering
+                                          where c.id == value
+                                          select c).ToList();
+                ViewData["QueryList"] = list;
+            }
+   
+    
             return View();
         }
         [HttpGet]
@@ -56,8 +92,6 @@ namespace coursedesign.Controllers
 
         public ActionResult EditData()
         {
-
-            List<engineering> list = (from c in db.engineering select c).ToList();
             ViewData["DataList"] = list;
             return View();
         }
@@ -99,7 +133,7 @@ namespace coursedesign.Controllers
         {
             engineering e = db.engineering.Where(e1 => e1.id == model.id).ToList().FirstOrDefault();
             e.name = model.name.Trim();
-            e.place = model.place.Trim();
+            e.place = model.place.Trim(); 
             e.salary = model.salary;
             e.sex = model.sex;
             e.telephone = model.telephone.Trim();
@@ -115,9 +149,6 @@ namespace coursedesign.Controllers
         {
             try
             {
-                //需要一个实体对象参数
-                //db.Customers.Remove(new Customer() {CustomerNo = id });
-                //1,创建要删除的对象
                 int id = Convert.ToInt32(Request.QueryString["Cid"]);
                 engineering engineering = (from e in db.engineering where e.id == id select e).SingleOrDefault();
                 db.engineering.Remove(engineering);
@@ -126,9 +157,7 @@ namespace coursedesign.Controllers
             }
             catch (Exception)
             {
-                //指定对应跳转的视图Test下的Test.cshtml文件
                 return RedirectToAction("EditData", "EditData");
-                //return Content("删除失败" + ex.Message);
             }
         }
     }

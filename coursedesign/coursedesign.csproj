@@ -218,6 +218,7 @@
     <Content Include="Views\Home\ExitSys.cshtml" />
     <Content Include="Views\Home\EditData.cshtml" />
     <Content Include="Views\Home\Modify.cshtml" />
+    <Content Include="Views\Home\ShowQueryData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
