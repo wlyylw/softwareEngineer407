@@ -27,21 +27,27 @@
             <td>工龄</td>
             <td>工资</td>
             <td>出生日期</td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         @foreach (var a in ViewData["QueryList"] as List<engineering>)
         {
-            <tr>
-                <td>@a.id</td>
-                <td>@a.name</td>
-                <td>@a.sex</td>
-                <td>@a.education</td>
-                <td>@a.place</td>
-                <td>@a.address</td>
-                <td>@a.telephone</td>
-                <td>@a.workage</td>
-                <td>@a.salary</td>
-                <td>@a.birth</td>
-            </tr>
+    <tr>
+        <td>@a.id</td>
+        <td>@a.name</td>
+        <td>@a.sex</td>
+        <td>@a.education</td>
+        <td>@a.place</td>
+        <td>@a.address</td>
+        <td>@a.telephone</td>
+        <td>@a.workage</td>
+        <td>@a.salary</td>
+        <td>@a.birth</td>
+        <td>@Html.ActionLink("修改", "Modify", new { Cid = a.id })</td>
+        <td>@Html.ActionLink("删除", "Remove", new { Cid = a.id })</td>
+        <td>@Html.ActionLink("计算月薪", "CalculateData",new { Cid = a.id})</td>
+    </tr>
         }
     </table>
     <br />

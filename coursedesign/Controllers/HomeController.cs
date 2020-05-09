@@ -32,10 +32,7 @@ namespace coursedesign.Controllers
      
         public ActionResult ShowQueryData()
         {
-
-
             var option = Request.Form["queryOption"];
-
             if (option.Equals("asname"))
             {
                 string value = Request.Form["queryType"];
@@ -44,7 +41,7 @@ namespace coursedesign.Controllers
                                           select c).ToList();
                 ViewData["QueryList"] = list;
             }
-            else
+            else if(option.Equals("asid"))
             {
                 int value = Convert.ToInt32( Request.Form["queryType"]);
                 List<engineering> list = (from c in db.engineering
@@ -52,8 +49,10 @@ namespace coursedesign.Controllers
                                           select c).ToList();
                 ViewData["QueryList"] = list;
             }
-   
-    
+            else
+            {
+                return Content("请输入信息");
+            }
             return View();
         }
         [HttpGet]
@@ -97,8 +96,29 @@ namespace coursedesign.Controllers
         }
         public ActionResult CalculateData()
         {
+            int id = Convert.ToInt32(Request.QueryString["Cid"]);
+            engineering engineering = (from e in db.engineering where id == e.id select e).SingleOrDefault();
+            return View(engineering);
+        }
+        [HttpPost]
+        public ActionResult CalculateData(engineering engineering)
+        {
+            int basicsalary = Convert.ToInt32(engineering.salary);
+            int workage = Convert.ToInt32(engineering.workage);
+            var effectiveDay = Convert.ToInt32(Request.Form["effectiveDay"]);
+            var effectiveMonth = Convert.ToInt32(Request.Form["effectiveMonth"]);
+            var insurace = Convert.ToInt32(Request.Form["insurance"]);
+            if (effectiveDay == 0 || effectiveMonth == 0 || insurace == 0 || workage == 0 || basicsalary == 0)
+            {
+                ViewBag.salary = null;
+            }
+            else
+                ViewBag.salary = (basicsalary + 10 * effectiveDay + effectiveMonth * workage / 100) * 0.9 - insurace;
             return View();
         }
+
+
+
         public ActionResult SaveData()
         {
             return View();

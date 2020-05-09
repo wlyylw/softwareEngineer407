@@ -1,7 +1,37 @@
-﻿
+﻿@model engineering
 @{
-    ViewBag.Title = "CalculateData";
+    ViewBag.Title = "计算月薪";
+}
+<h2>月薪计算规则: （基本工资＋10╳月有效工作日天数＋月效益╳工作年限÷100）╳0.9－月保险金</h2>
+
+@using (Html.BeginForm("CalculateData", "Home", FormMethod.Post))
+{
+    <text>编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.id)
+    <br />
+    <br />
+    <text>姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.name)
+    <br />
+    <br />
+    <text>工龄&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.workage)
+    <br />
+    <br />
+    <text>工资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.salary)
+    <br />
+    <br />
+    <text>月效益&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBox("effectiveMonth")
+    <br />
+    <br />
+    <text>月保险金&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBox("insurance")
+    <br />
+    <br />
+    <text>有效工作日</text>@Html.TextBox("effectiveDay")
+    <br />
+    <br />
+    <p>
+        <input type="submit" value="计算" />
+        &nbsp;&nbsp;&nbsp;&nbsp;月薪为:@ViewBag.salary
+    </p>
 }
 
-<h2>CalculateData</h2>
+
 
