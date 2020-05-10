@@ -16,7 +16,7 @@ namespace coursedesign
     public partial class DataEntity : DbContext
     {
         public DataEntity()
-            : base("name=Entities1")
+            : base("name=Entities3")
         {
         }
     
