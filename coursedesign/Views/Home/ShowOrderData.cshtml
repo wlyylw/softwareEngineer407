@@ -1,36 +1,9 @@
-﻿@model engineering
+﻿
 @{
-    ViewBag.Title = "编辑工程师信息";
-}
-<style>
-    table, table tr th, table tr td {
-        border: 1px solid #0094ff;
-    }
-
-    table {
-        width: 600px;
-        text-align: center;
-        border-collapse: collapse;
-    }
-</style>
-<h2>编辑工程师信息</h2>
-
-
-@using (Html.BeginForm("ShowOrderData", "Home", FormMethod.Post))
-{
-    <tr>
-        <td>排序方式：</td>
-        <td>
-            @Html.DropDownList("orderOption", ViewBag.orderlist as SelectList)
-
-        </td>
-    </tr>
-    <input type="submit" value="排序" />
+    ViewBag.Title = "ShowOrderData";
 }
 
-
-
-<br />
+<h2>ShowOrderData</h2>
 
 <body>
     @using (Html.BeginForm())
@@ -73,4 +46,3 @@
         </table>
     }
 </body>
-

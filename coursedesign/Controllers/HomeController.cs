@@ -1,20 +1,24 @@
-﻿using Microsoft.Ajax.Utilities;
+﻿using ExcelDataReader;
+using Microsoft.Ajax.Utilities;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
-
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using ExcelDataReader;
 namespace coursedesign.Controllers
 {
     public class HomeController : Controller
     {
-        static DataEntity db = new DataEntity();
-        List<engineering> list = (from c in db.engineering select c).ToList();
+        DataEntity db = new DataEntity();
+       
 
         public ActionResult Index()
         {
@@ -93,9 +97,54 @@ namespace coursedesign.Controllers
 
         public ActionResult EditData()
         {
+            List<engineering> list = (from c in db.engineering select c).ToList();
+            ViewData["DataList"] = list;
+            var listItem = new List<SelectListItem>
+            {
+                new SelectListItem{Text="根据编号降序",Value="1"},
+                new SelectListItem{Text="根据编号升序",Value="-1"},
+                new SelectListItem{Text="根据姓名降序",Value="2"},
+                new SelectListItem{Text="根据姓名升序",Value="-2"},
+                new SelectListItem{Text="根据工龄降序",Value="3"},
+                new SelectListItem{Text="根据工龄升序",Value="-3"}
+            };
+            ViewBag.orderlist = new SelectList(listItem, "Value", "Text", "");
+            return View();
+        }
+        public ActionResult ShowOrderData()
+        {
+            //TODO:升序降序操作
+            List<engineering> list = (from c in db.engineering select c).ToList();
+            var option = Request.Form["orderOption"];
+            switch(option)
+            {
+                case "1":
+                    list = list.OrderByDescending(t => t.id).ToList();
+                    break;
+                case "-1":
+                    list = list.OrderBy(t => t.id).ToList();
+                    break;
+                case "2":
+                    list = list.OrderByDescending(t => t.name).ToList();
+                    break;
+                case "-2":
+                    list = list.OrderBy(t => t.name).ToList();
+                    break;
+                case "3":
+                    list = list.OrderByDescending(t => t.workage).ToList();
+                    break;
+                case "-3":
+                    list = list.OrderBy(t => t.workage).ToList();
+                    break;
+                default:
+                    break;
+
+            }
             ViewData["DataList"] = list;
             return View();
         }
+
+
         public ActionResult CalculateData()
         {
             int id = Convert.ToInt32(Request.QueryString["Cid"]);
@@ -135,6 +184,8 @@ namespace coursedesign.Controllers
                              u.salary,
                              u.birth
                          }).ToList();
+
+
             string p = System.AppDomain.CurrentDomain.BaseDirectory;
             string sWebRootFolder = p+@"\excels\";
             string sFileName = $@"{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
@@ -146,9 +197,6 @@ namespace coursedesign.Controllers
                 file = new FileInfo(path);
             }
             ExcelPackage.LicenseContext = LicenseContext.Commercial;
-
-            // If you use EPPlus in a noncommercial context
-            // according to the Polyform Noncommercial license:
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage package = new ExcelPackage(file))
             {
@@ -156,17 +204,10 @@ namespace coursedesign.Controllers
                 worksheet.Cells.LoadFromCollection(query, true);
                 package.Save();
             }
-
-
-            return Content("保存成功");
+            return Content("<script>alert('保存成功');history.go(-1);</script>");
         }
         public ActionResult ClearData()
         {
-            return View();
-        }
-        public ActionResult PrintData()
-        {
-
             return View();
         }
         public ActionResult ReGetData()
@@ -217,5 +258,8 @@ namespace coursedesign.Controllers
                 return RedirectToAction("EditData", "EditData");
             }
         }
+
+       
+
     }
 }

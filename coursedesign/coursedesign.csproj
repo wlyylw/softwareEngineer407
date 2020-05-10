@@ -54,11 +54,15 @@
     <Reference Include="EPPlus, Version=5.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>packages\EPPlus.5.1.1\lib\net45\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Threading.Tasks" />
@@ -218,12 +222,12 @@
     <Content Include="Views\Home\CalculateData.cshtml" />
     <Content Include="Views\Home\SaveData.cshtml" />
     <Content Include="Views\Home\ClearData.cshtml" />
-    <Content Include="Views\Home\PrintData.cshtml" />
     <Content Include="Views\Home\ReGetData.cshtml" />
     <Content Include="Views\Home\ExitSys.cshtml" />
     <Content Include="Views\Home\EditData.cshtml" />
     <Content Include="Views\Home\Modify.cshtml" />
     <Content Include="Views\Home\ShowQueryData.cshtml" />
+    <Content Include="Views\Home\ShowOrderData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
