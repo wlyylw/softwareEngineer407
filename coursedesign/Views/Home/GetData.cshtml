@@ -1,0 +1,46 @@
+﻿@model engineering
+@{
+    ViewBag.Title = "GetData";
+}
+
+<h2>Excel表中的数据如下</h2>
+
+<body>
+    @using (Html.BeginForm())
+    {
+        <table>
+            <tr>
+                <td>编号</td>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>学历</td>
+                <td>籍贯</td>
+                <td>地址</td>
+                <td>电话</td>
+                <td>工龄</td>
+                <td>工资</td>
+                <td>出生日期</td>
+            </tr>
+            @foreach (var a in ViewData["UpList"] as List<engineering>)
+            {
+                <tr>
+                    <td>@a.id</td>
+                    <td>@a.name</td>
+                    <td>@a.sex</td>
+                    <td>@a.education</td>
+                    <td>@a.place</td>
+                    <td>@a.address</td>
+                    <td>@a.telephone</td>
+                    <td>@a.workage</td>
+                    <td>@a.salary</td>
+                    <td>@a.birth</td>
+
+
+                </tr>
+            }
+        </table>
+    }
+    @Html.ActionLink("添加到数据库", "InsertExcelInfo", "Home")
+        &nbsp; &nbsp; &nbsp;
+    @Html.ActionLink("取消", "UpLoadData", "Home")
+</body>

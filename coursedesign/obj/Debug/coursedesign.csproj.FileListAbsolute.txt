@@ -92,3 +92,6 @@ E:\Desktop\softwareEngineer407\coursedesign\bin\zh-Hans\EntityFramework.resource
 E:\Desktop\softwareEngineer407\coursedesign\bin\EPPlus.dll
 E:\Desktop\softwareEngineer407\coursedesign\bin\EPPlus.xml
 E:\Desktop\softwareEngineer407\coursedesign\bin\zh-Hans\EntityFramework.SqlServer.resources.dll
+E:\Desktop\softwareEngineer407\coursedesign\bin\ExcelDataReader.dll
+E:\Desktop\softwareEngineer407\coursedesign\bin\ExcelDataReader.pdb
+E:\Desktop\softwareEngineer407\coursedesign\bin\ExcelDataReader.xml

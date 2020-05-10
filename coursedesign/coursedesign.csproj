@@ -222,12 +222,13 @@
     <Content Include="Views\Home\CalculateData.cshtml" />
     <Content Include="Views\Home\SaveData.cshtml" />
     <Content Include="Views\Home\ClearData.cshtml" />
-    <Content Include="Views\Home\ReGetData.cshtml" />
     <Content Include="Views\Home\ExitSys.cshtml" />
     <Content Include="Views\Home\EditData.cshtml" />
     <Content Include="Views\Home\Modify.cshtml" />
     <Content Include="Views\Home\ShowQueryData.cshtml" />
     <Content Include="Views\Home\ShowOrderData.cshtml" />
+    <Content Include="Views\Home\GetData.cshtml" />
+    <Content Include="Views\Home\UpLoadData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

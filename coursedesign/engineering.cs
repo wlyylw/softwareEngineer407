@@ -26,5 +26,19 @@ namespace coursedesign
         public string workage { get; set; }
         public Nullable<int> salary { get; set; }
 
+        public void SetValue(engineering e, engineering model)
+        {
+            e.id = model.id;
+            e.name = model.name.Trim();
+            e.place = model.place.Trim();
+            e.salary = model.salary;
+            e.sex = model.sex;
+            e.telephone = model.telephone.Trim();
+            e.workage = model.workage.Trim();
+            e.address = model.address.Trim();
+            e.education = model.education;
+            e.birth = model.birth;
+        }
+
     }
 }

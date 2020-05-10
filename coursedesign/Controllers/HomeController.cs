@@ -12,7 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ExcelDataReader;
+
 namespace coursedesign.Controllers
 {
     public class HomeController : Controller
@@ -20,7 +20,7 @@ namespace coursedesign.Controllers
         DataEntity db = new DataEntity();
        
 
-        public ActionResult Index()
+        public ActionResult Index() 
         {
             return View();
         }
@@ -72,16 +72,7 @@ namespace coursedesign.Controllers
             try
             {
                 engineering e = new engineering();
-                e.id = model.id;
-                e.name = model.name.Trim();
-                e.place = model.place.Trim();
-                e.salary = model.salary;
-                e.sex = model.sex;
-                e.telephone = model.telephone.Trim();
-                e.workage = model.workage.Trim();
-                e.address = model.address.Trim();
-                e.education = model.education;
-                e.birth = model.birth;
+                e.SetValue(e, model);
                 db.engineering.Add(e);
                 db.SaveChanges();
                 db.Configuration.ValidateOnSaveEnabled = true;
@@ -210,8 +201,108 @@ namespace coursedesign.Controllers
         {
             return View();
         }
-        public ActionResult ReGetData()
+
+        public ActionResult UpLoadData()
         {
+            return View();
+        }
+     
+        [HttpPost]
+        public ActionResult UploadData(HttpPostedFileBase file)
+        {
+            var fileName = file.FileName;
+            var filePath = Server.MapPath(string.Format("~/{0}", "UpLoadExcel"));
+            string path = Path.Combine(filePath, fileName);
+            FileInfo f = new FileInfo(path);
+            if (f.Exists)
+            {
+                f.Delete();
+            }
+            file.SaveAs(path);
+            ExcelPackage.LicenseContext = LicenseContext.Commercial;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            List<engineering> es = new List<engineering>();
+
+            using (ExcelPackage package = new ExcelPackage(new FileStream(path, FileMode.Open)))
+            {
+                //TODO:做一个列表的判断
+                ExcelWorksheet sheet = package.Workbook.Worksheets[0];
+                //index从1开始
+                for(int row = 2;row<= sheet.Dimension.Rows;row++)
+                {
+                    engineering e = new engineering();
+                    for (int colunmn = 1;colunmn<=sheet.Dimension.Columns;colunmn++)
+                    {
+                        string s = sheet.Cells[1, colunmn].Value.ToString();
+                        switch (s)
+                        {
+                            case "id":
+                                e.id = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
+                                break;
+                            case "name":
+                                e.name = sheet.Cells[row, colunmn].Value.ToString();
+                                break;
+                            case "sex":
+                                e.sex = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
+                                break;
+                            case "education":
+                                e.education = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
+                                break;
+                            case "place":
+                                e.place = sheet.Cells[row, colunmn].Value.ToString();
+                                break;
+                            case "address":
+                                e.address = sheet.Cells[row, colunmn].Value.ToString();
+                                break;
+                            case "telephone":
+                                e.telephone = sheet.Cells[row, colunmn].Value.ToString();
+                                break;
+                            case "workage":
+                                e.workage = sheet.Cells[row, colunmn].Value.ToString();
+                                break;
+                            case "salary":
+                                e.salary = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
+                                break;
+                            case "birth":
+                                e.birth = Convert.ToDateTime(sheet.Cells[row, colunmn].Value.ToString()); 
+                                break;
+                        }   
+                    }
+                    es.Add(e);
+                }
+                this.TempData["list"] = es;
+            }
+           
+            return RedirectToAction("GetData");
+        }
+
+        public ActionResult InsertExcelInfo()
+        {
+            List<engineering> es = (List < engineering >) this.TempData["list"];
+            try
+            {
+                foreach (engineering e in es)
+                {
+                    db.engineering.Add(e);
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                }
+                db.SaveChanges();
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                return Content("<script>alert('添加成功');history.go(-1);</script>");
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+
+
+
+        public ActionResult GetData()
+        {
+            ViewData["UpList"] = this.TempData["list"];
+            this.TempData["list"] = this.TempData["list"];
             return View();
         }
         public ActionResult ExitSys()
@@ -230,15 +321,9 @@ namespace coursedesign.Controllers
         public ActionResult Modify(engineering model)
         {
             engineering e = db.engineering.Where(e1 => e1.id == model.id).ToList().FirstOrDefault();
-            e.name = model.name.Trim();
-            e.place = model.place.Trim(); 
-            e.salary = model.salary;
-            e.sex = model.sex;
-            e.telephone = model.telephone.Trim();
-            e.workage = model.workage.Trim();
-            e.address = model.address.Trim();
-            e.education = model.education;
-            e.birth = model.birth;
+            e.SetValue(e, model);
+
+
             db.SaveChanges();
             db.Configuration.ValidateOnSaveEnabled = true;
             return RedirectToAction("EditData", "Home");
