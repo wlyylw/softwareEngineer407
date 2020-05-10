@@ -2,22 +2,25 @@
     ViewBag.Title = "Home Page";
 }
 
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    <div class="row">
+        <form>
+            <br />
+            <br />
+            <br />
+            <div>
+                <text>用户名</text>
+                @Html.TextBox("username")
+            </div>
+            <br />
+            <div>
+                <text>密码&nbsp&nbsp&nbsp&nbsp</text>
+                @Html.TextBox("password")
+            </div>
+        </form>
+        <br /><br />
 
-<div class="row">
-    <form >
-        <br />
-        <br />
-        <br />
-        <div>
-            <text>用户名</text>
-            <input type="text" name="username" />
-        </div>
-        <br />
-        <div>
-            <text>密码&nbsp&nbsp&nbsp&nbsp</text>
-            <input type="text" name="password" />
-        </div>
-    </form>
-  
-
-</div>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="submit" value="登录" />
+    </div>
+}

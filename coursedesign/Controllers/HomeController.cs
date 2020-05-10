@@ -22,11 +22,37 @@ namespace coursedesign.Controllers
 
         public ActionResult Index() 
         {
+            string username = Request.Form["username"];
+            string password = Request.Form["password"];
+
+            List<user> list = (from c in db.user
+                                      where c.username.Trim() == username
+                               select c).ToList();
+
+            foreach(user e in list)
+            {
+                if(e.password.Trim().Equals(password))
+                {
+                    //TODO:登录成功添加session 
+                    Session["username"] = username;
+                    return Content("<script>alert('登录成功');window.location.href='../Home/Index';</script>");
+                }
+                else
+                {
+                    return Content("<script>alert('用户名或密码错误');history.go(-1);</script>");
+                }
+            }
             return View();
+
         }
         [HttpGet]
         public ActionResult QueryData()
         {
+            if(Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
+
             var listItem = new List<SelectListItem>
             {
                 new SelectListItem{Text="根据姓名查询",Value="asname"},
@@ -38,6 +64,10 @@ namespace coursedesign.Controllers
      
         public ActionResult ShowQueryData()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             var option = Request.Form["queryOption"];
             if (option.Equals("asname"))
             {
@@ -64,11 +94,19 @@ namespace coursedesign.Controllers
         [HttpGet]
         public ActionResult AddData()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             return View();
         }
         [HttpPost]
         public ActionResult AddData(engineering model)
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             try
             {
                 engineering e = new engineering();
@@ -88,6 +126,10 @@ namespace coursedesign.Controllers
 
         public ActionResult EditData()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             List<engineering> list = (from c in db.engineering select c).ToList();
             ViewData["DataList"] = list;
             var listItem = new List<SelectListItem>
@@ -104,6 +146,10 @@ namespace coursedesign.Controllers
         }
         public ActionResult ShowOrderData()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             //TODO:升序降序操作
             List<engineering> list = (from c in db.engineering select c).ToList();
             var option = Request.Form["orderOption"];
@@ -138,6 +184,10 @@ namespace coursedesign.Controllers
 
         public ActionResult CalculateData()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             int id = Convert.ToInt32(Request.QueryString["Cid"]);
             engineering engineering = (from e in db.engineering where id == e.id select e).SingleOrDefault();
             return View(engineering);
@@ -145,6 +195,10 @@ namespace coursedesign.Controllers
         [HttpPost]
         public ActionResult CalculateData(engineering engineering)
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             int basicsalary = Convert.ToInt32(engineering.salary);
             int workage = Convert.ToInt32(engineering.workage);
             var effectiveDay = Convert.ToInt32(Request.Form["effectiveDay"]);
@@ -161,6 +215,10 @@ namespace coursedesign.Controllers
 
         public ActionResult SaveData()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             var query = (from u in db.engineering
                          select new
                          {
@@ -199,17 +257,36 @@ namespace coursedesign.Controllers
         }
         public ActionResult ClearData()
         {
-            return View();
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
+            List<engineering> list = (from c in db.engineering                                 
+                                      select c).ToList();
+            foreach(engineering e in list)
+            {
+                db.engineering.Remove(e);
+            }
+            db.SaveChanges();
+            return Content("<script>alert('清除成功');window.location.href='../Home/Index';</script>");
         }
 
         public ActionResult UpLoadData()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             return View();
         }
      
         [HttpPost]
         public ActionResult UploadData(HttpPostedFileBase file)
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             var fileName = file.FileName;
             var filePath = Server.MapPath(string.Format("~/{0}", "UpLoadExcel"));
             string path = Path.Combine(filePath, fileName);
@@ -278,6 +355,10 @@ namespace coursedesign.Controllers
 
         public ActionResult InsertExcelInfo()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             List<engineering> es = (List < engineering >) this.TempData["list"];
             try
             {
@@ -301,18 +382,35 @@ namespace coursedesign.Controllers
 
         public ActionResult GetData()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             ViewData["UpList"] = this.TempData["list"];
             this.TempData["list"] = this.TempData["list"];
             return View();
         }
         public ActionResult ExitSys()
         {
-            return View();
+           
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('尚未登陆');window.location.href='../Home/Index';</script>");
+            }
+            else
+            {
+                Session["username"] = null;
+                return Content("<script>alert('退出成功');window.location.href='../Home/Index';</script>");
+            }
         }
 
         [HttpGet]
         public ActionResult Modify()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+              }
             int id = Convert.ToInt32(Request.QueryString["Cid"]);
             engineering engineering = (from e in db.engineering where id == e.id select e).SingleOrDefault();
             return View(engineering);
@@ -320,6 +418,10 @@ namespace coursedesign.Controllers
         [HttpPost]
         public ActionResult Modify(engineering model)
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+            }
             engineering e = db.engineering.Where(e1 => e1.id == model.id).ToList().FirstOrDefault();
             e.SetValue(e, model);
 
@@ -330,6 +432,10 @@ namespace coursedesign.Controllers
         }
         public ActionResult Remove()
         {
+            if (Session["username"] == null)
+            {
+                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
+              }
             try
             {
                 int id = Convert.ToInt32(Request.QueryString["Cid"]);
