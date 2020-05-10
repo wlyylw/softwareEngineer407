@@ -13,17 +13,9 @@
     <Property Name="address" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="telephone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="workage" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="salary" Type="Int32" />
+    <Property Name="salary" Type="Int32" Nullable="false" />
   </EntityType>
-  <EntityType Name="user">
-    <Key>
-      <PropertyRef Name="username" />
-    </Key>
-    <Property Name="username" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-  </EntityType>
-  <EntityContainer Name="Entities1" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="Entities2" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="engineering" EntityType="Self.engineering" />
-    <EntitySet Name="user" EntityType="Self.user" />
   </EntityContainer>
 </Schema>

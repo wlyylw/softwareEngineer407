@@ -71,18 +71,36 @@ namespace coursedesign.Controllers
         {
             try
             {
-                engineering e = new engineering();
-                e.SetValue(e, model);
-                db.engineering.Add(e);
-                db.SaveChanges();
-                db.Configuration.ValidateOnSaveEnabled = true;
-                return RedirectToAction("AddData", "Home");
+                if (ModelState.IsValid)
+                {
+                    engineering e = new engineering();
+                    e.id = model.id;
+                    e.name = model.name.Trim();
+                    e.place = model.place.Trim();
+                    e.salary = model.salary;
+                    e.sex = model.sex;
+                    e.telephone = model.telephone.Trim();
+                    e.workage = model.workage.Trim();
+                    e.address = model.address.Trim();
+                    e.education = model.education;
+                    e.birth = model.birth;
+
+                    db.engineering.Add(e);
+                    db.SaveChanges();
+                    db.Configuration.ValidateOnSaveEnabled = true;
+                    return RedirectToAction("AddData", "Home");
+
+                }
+                else
+                {
+                    return View();
+                }
             }
             catch (Exception)
             {
                 //指定对应跳转的视图Test下的Test.cshtml文件
-     /*           return RedirectToAction("AddData", "AddData");*/
-                return Content("添加失败" );
+                /*           return RedirectToAction("AddData", "AddData");*/
+                return Content("出现问题，数据添加失败");
             }
         }
 
@@ -161,38 +179,123 @@ namespace coursedesign.Controllers
 
         public ActionResult SaveData()
         {
-            var query = (from u in db.engineering
-                         select new
-                         {
-                             u.id,
-                             u.name,
-                             u.sex,
-                             u.education,
-                             u.place,
-                             u.address,
-                             u.telephone,
-                             u.workage,
-                             u.salary,
-                             u.birth
-                         }).ToList();
+            //var query = (from u in db.engineering
+            //             select new
+            //             {
+            //                 u.id,
+            //                 u.name,
+            //                 u.sex,
+            //                 u.education,
+            //                 u.place,
+            //                 u.address,
+            //                 u.telephone,
+            //                 u.workage,
+            //                 u.salary,
+            //                 u.birth
+            //             }).ToList();
 
 
-            string p = System.AppDomain.CurrentDomain.BaseDirectory;
-            string sWebRootFolder = p+@"\excels\";
+            //string p = System.AppDomain.CurrentDomain.BaseDirectory;
+            //string sWebRootFolder = p+@"\excels\";
+            //string sFileName = $@"{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
+            //var path = Path.Combine(sWebRootFolder, sFileName);
+            //FileInfo file = new FileInfo(path);
+            //if(file.Exists)
+            //{
+            //    file.Delete();
+            //    file = new FileInfo(path);
+            //}
+            //ExcelPackage.LicenseContext = LicenseContext.Commercial;
+            //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            //using (ExcelPackage package = new ExcelPackage(file))
+            //{
+            //    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("UserInfo");
+            //    worksheet.Cells.LoadFromCollection(query, true);
+            //    package.Save();
+            //}
+
+            List<engineering> list = (from c in db.engineering select c).ToList();
+            //ViewData["DataList"] = list;
+            ////指定项目存放的路径
+            //string sWebRootFolder = @"E:/";
+            ////指定项目名字
+            //string sFileName = "工程师管理系统" + $"{Guid.NewGuid()}.xlsx";
+            string sWebRootFolder = System.AppDomain.CurrentDomain.BaseDirectory + @"\excels\";
             string sFileName = $@"{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
-            var path = Path.Combine(sWebRootFolder, sFileName);
-            FileInfo file = new FileInfo(path);
-            if(file.Exists)
+            //把项目名加到指定存放的路径
+            FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+            if (file.Exists)
             {
                 file.Delete();
-                file = new FileInfo(path);
+                file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
             }
             ExcelPackage.LicenseContext = LicenseContext.Commercial;
+
+            // If you use EPPlus in a noncommercial context
+            // according to the Polyform Noncommercial license:
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage package = new ExcelPackage(file))
             {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("UserInfo");
-                worksheet.Cells.LoadFromCollection(query, true);
+                //添加worksheet的名字
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("工程师管理系统");
+                //添加表头名字
+                worksheet.Cells[1, 1].Value = "编号";
+                worksheet.Cells[1, 2].Value = "姓名";
+                worksheet.Cells[1, 3].Value = "性别";
+                worksheet.Cells[1, 4].Value = "学历";
+                worksheet.Cells[1, 5].Value = "籍贯";
+                worksheet.Cells[1, 6].Value = "地址";
+                worksheet.Cells[1, 7].Value = "电话";
+                worksheet.Cells[1, 8].Value = "工龄";
+                worksheet.Cells[1, 9].Value = "工资";
+                worksheet.Cells[1, 10].Value = "出生日期";
+                //添加值
+                var rowNum = 2; // rowNum 1 is head
+                foreach (var message in list as List<engineering>)
+                {
+                    worksheet.Cells["A" + rowNum].Value = message.id;
+                    worksheet.Cells["B" + rowNum].Value = message.name;
+                    switch (message.sex)
+                    {
+                        case 0:
+                            worksheet.Cells["C" + rowNum].Value = "女";
+                            break;
+                        case 1:
+                            worksheet.Cells["C" + rowNum].Value = "男";
+                            break;
+                        default:
+                            worksheet.Cells["C" + rowNum].Value = "  ";
+                            break;
+                    }
+                    switch (message.education)
+                    {
+                        case 0:
+                            worksheet.Cells["D" + rowNum].Value = "高中";
+                            break;
+                        case 1:
+                            worksheet.Cells["D" + rowNum].Value = "学士";
+                            break;
+                        case 2:
+                            worksheet.Cells["D" + rowNum].Value = "硕士";
+                            break;
+                        case 3:
+                            worksheet.Cells["D" + rowNum].Value = "博士";
+                            break;
+                        case 4:
+                            worksheet.Cells["D" + rowNum].Value = "其他";
+                            break;
+                        default:
+                            worksheet.Cells["D" + rowNum].Value = "无学历";
+                            break;
+                    }
+                    worksheet.Cells["E" + rowNum].Value = message.place;
+                    worksheet.Cells["F" + rowNum].Value = message.address;
+                    worksheet.Cells["G" + rowNum].Value = message.telephone;
+                    worksheet.Cells["H" + rowNum].Value = message.workage;
+                    worksheet.Cells["I" + rowNum].Value = message.salary;
+                    worksheet.Cells["J" + rowNum].Value = message.birth.ToString();
+                    rowNum++;
+                }
                 package.Save();
             }
             return Content("<script>alert('保存成功');history.go(-1);</script>");
@@ -236,34 +339,46 @@ namespace coursedesign.Controllers
                         string s = sheet.Cells[1, colunmn].Value.ToString();
                         switch (s)
                         {
-                            case "id":
+                            case "编号":
                                 e.id = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
                                 break;
-                            case "name":
+                            case "姓名":
                                 e.name = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
-                            case "sex":
-                                e.sex = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
+                            case "性别":
+                                if (sheet.Cells[row, colunmn].Value.ToString().Equals("男"))
+                                    e.sex = 1;
+                                else
+                                    e.sex = 0;
                                 break;
-                            case "education":
-                                e.education = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
+                            case "学历":
+                                if (sheet.Cells[row, colunmn].Value.ToString().Equals("高中"))
+                                    e.education = 0;
+                                else if(sheet.Cells[row, colunmn].Value.ToString().Equals("学士"))
+                                    e.education = 1;
+                                else if (sheet.Cells[row, colunmn].Value.ToString().Equals("硕士"))
+                                    e.education = 2;
+                                else if (sheet.Cells[row, colunmn].Value.ToString().Equals("博士"))
+                                    e.education = 3;
+                                else if (sheet.Cells[row, colunmn].Value.ToString().Equals("其他"))
+                                    e.education = 4;
                                 break;
-                            case "place":
+                            case "籍贯":
                                 e.place = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
-                            case "address":
+                            case "地址":
                                 e.address = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
-                            case "telephone":
+                            case "电话":
                                 e.telephone = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
-                            case "workage":
+                            case "工龄":
                                 e.workage = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
-                            case "salary":
+                            case "工资":
                                 e.salary = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
                                 break;
-                            case "birth":
+                            case "出生日期":
                                 e.birth = Convert.ToDateTime(sheet.Cells[row, colunmn].Value.ToString()); 
                                 break;
                         }   

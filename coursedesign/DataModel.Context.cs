@@ -16,7 +16,7 @@ namespace coursedesign
     public partial class DataEntity : DbContext
     {
         public DataEntity()
-            : base("name=Entities1")
+            : base("name=Entities2")
         {
         }
     
@@ -26,6 +26,5 @@ namespace coursedesign
         }
     
         public virtual DbSet<engineering> engineering { get; set; }
-        public virtual DbSet<user> user { get; set; }
     }
 }

@@ -13,17 +13,9 @@
     <Property Name="address" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="telephone" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="workage" Type="nchar" MaxLength="10" Nullable="false" />
-    <Property Name="salary" Type="int" />
-  </EntityType>
-  <EntityType Name="user">
-    <Key>
-      <PropertyRef Name="username" />
-    </Key>
-    <Property Name="username" Type="nchar" MaxLength="10" Nullable="false" />
-    <Property Name="password" Type="nchar" MaxLength="10" />
+    <Property Name="salary" Type="int" Nullable="false" />
   </EntityType>
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="engineering" EntityType="Self.engineering" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

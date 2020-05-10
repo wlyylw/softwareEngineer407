@@ -18,18 +18,10 @@
           <Property Name="address" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="telephone" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="workage" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="salary" Type="int" />
-        </EntityType>
-        <EntityType Name="user">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="password" Type="nchar" MaxLength="10" />
+          <Property Name="salary" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="engineering" EntityType="Self.engineering" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
@@ -49,25 +41,17 @@
           <Property Name="address" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="telephone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="workage" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="salary" Type="Int32" />
+          <Property Name="salary" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="user">
-          <Key>
-            <PropertyRef Name="username" />
-          </Key>
-          <Property Name="username" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-        </EntityType>
-        <EntityContainer Name="Entities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="engineering" EntityType="Self.engineering" />
-          <EntitySet Name="user" EntityType="Self.user" />
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities1">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities2">
           <EntitySetMapping Name="engineering">
             <EntityTypeMapping TypeName="Model.engineering">
               <MappingFragment StoreEntitySet="engineering">
@@ -81,14 +65,6 @@
                 <ScalarProperty Name="telephone" ColumnName="telephone" />
                 <ScalarProperty Name="workage" ColumnName="workage" />
                 <ScalarProperty Name="salary" ColumnName="salary" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="user">
-            <EntityTypeMapping TypeName="Model.user">
-              <MappingFragment StoreEntitySet="user">
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="password" ColumnName="password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

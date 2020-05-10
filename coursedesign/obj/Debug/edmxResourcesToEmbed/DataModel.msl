@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities1">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities2">
     <EntitySetMapping Name="engineering">
       <EntityTypeMapping TypeName="Model.engineering">
         <MappingFragment StoreEntitySet="engineering">
@@ -14,14 +14,6 @@
           <ScalarProperty Name="telephone" ColumnName="telephone" />
           <ScalarProperty Name="workage" ColumnName="workage" />
           <ScalarProperty Name="salary" ColumnName="salary" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="user">
-      <EntityTypeMapping TypeName="Model.user">
-        <MappingFragment StoreEntitySet="user">
-          <ScalarProperty Name="username" ColumnName="username" />
-          <ScalarProperty Name="password" ColumnName="password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
