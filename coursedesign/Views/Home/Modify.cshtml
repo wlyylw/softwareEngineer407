@@ -1,4 +1,4 @@
-﻿@model engineering
+﻿@model CourseDesign.Models.Engineering
 @{
     ViewBag.Title = "Modify";
 }
@@ -7,34 +7,35 @@
 @using (Html.BeginForm("Modify", "Home", FormMethod.Post))
 {
 
-    <text>编号</text>@Html.TextBoxFor(model => model.id)
+    <text>编号</text>@Html.TextBoxFor(model => model.Id)
     <br />
     <br />
-    <text>姓名</text>@Html.TextBoxFor(model => model.name)
+    <text>姓名</text>@Html.TextBoxFor(model => model.Name)
     <br />
     <br />
-    <text>性别</text>@Html.TextBoxFor(model => model.sex)
+    <text>性别</text>@Html.TextBoxFor(model => model.Sex)
+
     <br />
     <br />
-    <text>学历</text>@Html.TextBoxFor(model => model.education)
+    <text>学历</text>@Html.TextBoxFor(model => model.Education)
     <br />
     <br />
-    <text>籍贯</text>@Html.TextBoxFor(model => model.place)
+    <text>籍贯</text>@Html.TextBoxFor(model => model.Place)
     <br />
     <br />
-    <text>地址</text>@Html.TextBoxFor(model => model.address)
+    <text>地址</text>@Html.TextBoxFor(model => model.Address)
     <br />
     <br />
-    <text>电话</text>@Html.TextBoxFor(model => model.telephone)
+    <text>电话</text>@Html.TextBoxFor(model => model.Telephone)
     <br />
     <br />
-    <text>工龄</text>@Html.TextBoxFor(model => model.workage)
+    <text>工龄</text>@Html.TextBoxFor(model => model.Workage)
     <br />
     <br />
-    <text>工资</text>@Html.TextBoxFor(model => model.salary)
+    <text>工资</text>@Html.TextBoxFor(model => model.Salary)
     <br />
     <br />
-    <text>出生日期</text>@Html.TextBoxFor(model => model.birth)
+    <text>出生日期</text>@Html.TextBoxFor(model => model.Birth)
     <br />
     <br />
     <input type="submit" value="保存" />

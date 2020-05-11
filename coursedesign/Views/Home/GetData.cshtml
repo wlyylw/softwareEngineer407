@@ -1,4 +1,4 @@
-﻿@model engineering
+﻿@model CourseDesign.Models.Engineering
 @{
     ViewBag.Title = "GetData";
 }
@@ -21,19 +21,19 @@
                 <td>工资</td>
                 <td>出生日期</td>
             </tr>
-            @foreach (var a in ViewData["UpList"] as List<engineering>)
+            @foreach (var a in ViewData["UpList"] as List<CourseDesign.Models.Engineering>)
             {
                 <tr>
-                    <td>@a.id</td>
-                    <td>@a.name</td>
-                    <td>@a.sex</td>
-                    <td>@a.education</td>
-                    <td>@a.place</td>
-                    <td>@a.address</td>
-                    <td>@a.telephone</td>
-                    <td>@a.workage</td>
-                    <td>@a.salary</td>
-                    <td>@a.birth</td>
+                    <td>@a.Id</td>
+                    <td>@a.Name</td>
+                    <td>@a.Sex</td>
+                    <td>@a.Education</td>
+                    <td>@a.Place</td>
+                    <td>@a.Address</td>
+                    <td>@a.Telephone</td>
+                    <td>@a.Workage</td>
+                    <td>@a.Salary</td>
+                    <td>@a.Birth</td>
 
 
                 </tr>
@@ -41,6 +41,6 @@
         </table>
     }
     @Html.ActionLink("添加到数据库", "InsertExcelInfo", "Home")
-        &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
     @Html.ActionLink("取消", "UpLoadData", "Home")
 </body>

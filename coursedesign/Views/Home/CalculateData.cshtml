@@ -1,4 +1,4 @@
-﻿@model engineering
+﻿@model CourseDesign.Models.Engineering
 @{
     ViewBag.Title = "计算月薪";
 }
@@ -6,16 +6,16 @@
 
 @using (Html.BeginForm("CalculateData", "Home", FormMethod.Post))
 {
-    <text>编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.id)
+    <text>编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.Id)
     <br />
     <br />
-    <text>姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.name)
+    <text>姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.Name)
     <br />
     <br />
-    <text>工龄&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.workage)
+    <text>工龄&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.Workage)
     <br />
     <br />
-    <text>工资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.salary)
+    <text>工资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBoxFor(model => model.Salary)
     <br />
     <br />
     <text>月效益&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>@Html.TextBox("effectiveMonth")

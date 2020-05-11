@@ -1,4 +1,4 @@
-﻿@model engineering
+﻿@model CourseDesign.Models.Engineering
 @{
     ViewBag.Title = "查询工程师资料";
 }
@@ -12,10 +12,10 @@
     <tr>
         <td>查询类型：</td>
         <td>
-            @Html.DropDownList("queryOption", ViewBag.list as SelectList," ")
+            @Html.DropDownList("queryOption", ViewBag.list as SelectList, " ")
             &nbsp;&nbsp;&nbsp;&nbsp;@Html.TextBox("queryType")
         </td>
     </tr>
-    <input  type="submit" value="查询"/>
+    <input type="submit" value="查询" />
 
 }

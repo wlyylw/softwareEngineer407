@@ -1,58 +1,55 @@
-﻿using ExcelDataReader;
-using Microsoft.Ajax.Utilities;
+﻿using CourseDesign.Models;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace coursedesign.Controllers
+
+
+namespace CourseDesign.Controllers
 {
     public class HomeController : Controller
     {
-        DataEntity db = new DataEntity();
        
+        DataModel db = new DataModel();
 
-        public ActionResult Index() 
+        [ActionFilter(IsLogin = true)]
+        public ActionResult Index()
         {
             string username = Request.Form["username"];
             string password = Request.Form["password"];
 
-            List<user> list = (from c in db.user
-                                      where c.username.Trim() == username
+            List<User> list = (from c in db.User
+                               where c.Username.Trim() == username
                                select c).ToList();
-
-            foreach(user e in list)
+            int flag = 0;
+            foreach (User e in list)
             {
-                if(e.password.Trim().Equals(password))
+                if (e.Password.Trim().Equals(password))
                 {
                     //TODO:登录成功添加session 
                     Session["username"] = username;
+                    flag = 1;
                     return Content("<script>alert('登录成功');window.location.href='../Home/Index';</script>");
                 }
-                else
-                {
-                    return Content("<script>alert('用户名或密码错误');history.go(-1);</script>");
-                }
+
+            }
+            if (flag == 0 && username != null)
+            {
+                return Content("<script>alert('用户名或密码错误');history.go(-1);</script>");
             }
             return View();
 
         }
+
         [HttpGet]
         public ActionResult QueryData()
         {
-            if(Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
-
             var listItem = new List<SelectListItem>
             {
                 new SelectListItem{Text="根据姓名查询",Value="asname"},
@@ -61,27 +58,23 @@ namespace coursedesign.Controllers
             ViewBag.list = new SelectList(listItem, "Value", "Text", "");
             return View();
         }
-     
+
         public ActionResult ShowQueryData()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
             var option = Request.Form["queryOption"];
             if (option.Equals("asname"))
             {
                 string value = Request.Form["queryType"];
-                List<engineering> list = (from c in db.engineering
-                                          where c.name == value
+                List<Engineering> list = (from c in db.Engineering
+                                          where c.Name == value
                                           select c).ToList();
                 ViewData["QueryList"] = list;
             }
-            else if(option.Equals("asid"))
+            else if (option.Equals("asid"))
             {
-                int value = Convert.ToInt32( Request.Form["queryType"]);
-                List<engineering> list = (from c in db.engineering
-                                          where c.id == value
+                int value = Convert.ToInt32(Request.Form["queryType"]);
+                List<Engineering> list = (from c in db.Engineering
+                                          where c.Id == value
                                           select c).ToList();
                 ViewData["QueryList"] = list;
             }
@@ -94,36 +87,29 @@ namespace coursedesign.Controllers
         [HttpGet]
         public ActionResult AddData()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
             return View();
         }
+
         [HttpPost]
-        public ActionResult AddData(engineering model)
+        public ActionResult AddData(Engineering model)
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
             try
             {
                 if (ModelState.IsValid)
                 {
-                    engineering e = new engineering();
-                    e.id = model.id;
-                    e.name = model.name.Trim();
-                    e.place = model.place.Trim();
-                    e.salary = model.salary;
-                    e.sex = model.sex;
-                    e.telephone = model.telephone.Trim();
-                    e.workage = model.workage.Trim();
-                    e.address = model.address.Trim();
-                    e.education = model.education;
-                    e.birth = model.birth;
+                    Engineering e = new Engineering();
+                    e.Id = model.Id;
+                    e.Name = model.Name.Trim();
+                    e.Place = model.Place.Trim();
+                    e.Salary = model.Salary;
+                    e.Sex = model.Sex;
+                    e.Telephone = model.Telephone.Trim();
+                    e.Workage = model.Workage;
+                    e.Address = model.Address.Trim();
+                    e.Education = model.Education;
+                    e.Birth = model.Birth;
 
-                    db.engineering.Add(e);
+                    db.Engineering.Add(e);
                     db.SaveChanges();
                     db.Configuration.ValidateOnSaveEnabled = true;
                     return RedirectToAction("AddData", "Home");
@@ -139,14 +125,12 @@ namespace coursedesign.Controllers
                 return Content("出现问题，数据添加失败");
             }
         }
+        //TODO:
 
         public ActionResult EditData()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
-            List<engineering> list = (from c in db.engineering select c).ToList();
+
+            List<Engineering> list = (from c in db.Engineering select c).ToList();
             ViewData["DataList"] = list;
             var listItem = new List<SelectListItem>
             {
@@ -160,34 +144,32 @@ namespace coursedesign.Controllers
             ViewBag.orderlist = new SelectList(listItem, "Value", "Text", "");
             return View();
         }
+
         public ActionResult ShowOrderData()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
+
             //TODO:升序降序操作
-            List<engineering> list = (from c in db.engineering select c).ToList();
+            List<Engineering> list = (from c in db.Engineering select c).ToList();
             var option = Request.Form["orderOption"];
-            switch(option)
+            switch (option)
             {
                 case "1":
-                    list = list.OrderByDescending(t => t.id).ToList();
+                    list = list.OrderByDescending(t => t.Id).ToList();
                     break;
                 case "-1":
-                    list = list.OrderBy(t => t.id).ToList();
+                    list = list.OrderBy(t => t.Id).ToList();
                     break;
                 case "2":
-                    list = list.OrderByDescending(t => t.name).ToList();
+                    list = list.OrderByDescending(t => t.Name).ToList();
                     break;
                 case "-2":
-                    list = list.OrderBy(t => t.name).ToList();
+                    list = list.OrderBy(t => t.Name).ToList();
                     break;
                 case "3":
-                    list = list.OrderByDescending(t => t.workage).ToList();
+                    list = list.OrderByDescending(t => t.Workage).ToList();
                     break;
                 case "-3":
-                    list = list.OrderBy(t => t.workage).ToList();
+                    list = list.OrderBy(t => t.Workage).ToList();
                     break;
                 default:
                     break;
@@ -197,26 +179,20 @@ namespace coursedesign.Controllers
             return View();
         }
 
-
         public ActionResult CalculateData()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
+
             int id = Convert.ToInt32(Request.QueryString["Cid"]);
-            engineering engineering = (from e in db.engineering where id == e.id select e).SingleOrDefault();
+            Engineering engineering = (from e in db.Engineering where id == e.Id select e).SingleOrDefault();
             return View(engineering);
         }
+
         [HttpPost]
-        public ActionResult CalculateData(engineering engineering)
+        public ActionResult CalculateData(Engineering engineering)
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
-            int basicsalary = Convert.ToInt32(engineering.salary);
-            int workage = Convert.ToInt32(engineering.workage);
+
+            int basicsalary = Convert.ToInt32(engineering.Salary);
+            int workage = Convert.ToInt32(engineering.Workage);
             var effectiveDay = Convert.ToInt32(Request.Form["effectiveDay"]);
             var effectiveMonth = Convert.ToInt32(Request.Form["effectiveMonth"]);
             var insurace = Convert.ToInt32(Request.Form["insurance"]);
@@ -228,71 +204,25 @@ namespace coursedesign.Controllers
                 ViewBag.salary = (basicsalary + 10 * effectiveDay + effectiveMonth * workage / 100) * 0.9 - insurace;
             return View();
         }
-
         public ActionResult SaveData()
         {
-//
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
-            var query = (from u in db.engineering
+            var query = (from u in db.Engineering
                          select new
                          {
-                             u.id,
-                             u.name,
-                             u.sex,
-                             u.education,
-                             u.place,
-                             u.address,
-                             u.telephone,
-                             u.workage,
-                             u.salary,
-                             u.birth
+                             u.Id,
+                             u.Name,
+                             u.Sex,
+                             u.Education,
+                             u.Place,
+                             u.Address,
+                             u.Telephone,
+                             u.Workage,
+                             u.Salary,
+                             u.Birth
                          }).ToList();
-//
-            //var query = (from u in db.engineering
-            //             select new
-            //             {
-            //                 u.id,
-            //                 u.name,
-            //                 u.sex,
-            //                 u.education,
-            //                 u.place,
-            //                 u.address,
-            //                 u.telephone,
-            //                 u.workage,
-            //                 u.salary,
-            //                 u.birth
-            //             }).ToList();
 
+            List<Engineering> list = (from c in db.Engineering select c).ToList();
 
-
-            //string p = System.AppDomain.CurrentDomain.BaseDirectory;
-            //string sWebRootFolder = p+@"\excels\";
-            //string sFileName = $@"{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
-            //var path = Path.Combine(sWebRootFolder, sFileName);
-            //FileInfo file = new FileInfo(path);
-            //if(file.Exists)
-            //{
-            //    file.Delete();
-            //    file = new FileInfo(path);
-            //}
-            //ExcelPackage.LicenseContext = LicenseContext.Commercial;
-            //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            //using (ExcelPackage package = new ExcelPackage(file))
-            //{
-            //    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("UserInfo");
-            //    worksheet.Cells.LoadFromCollection(query, true);
-            //    package.Save();
-            //}
-
-            List<engineering> list = (from c in db.engineering select c).ToList();
-            //ViewData["DataList"] = list;
-            ////指定项目存放的路径
-            //string sWebRootFolder = @"E:/";
-            ////指定项目名字
-            //string sFileName = "工程师管理系统" + $"{Guid.NewGuid()}.xlsx";
             string sWebRootFolder = System.AppDomain.CurrentDomain.BaseDirectory + @"\excels\";
             string sFileName = $@"{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
             //把项目名加到指定存放的路径
@@ -324,11 +254,11 @@ namespace coursedesign.Controllers
                 worksheet.Cells[1, 10].Value = "出生日期";
                 //添加值
                 var rowNum = 2; // rowNum 1 is head
-                foreach (var message in list as List<engineering>)
+                foreach (var message in list as List<Engineering>)
                 {
-                    worksheet.Cells["A" + rowNum].Value = message.id;
-                    worksheet.Cells["B" + rowNum].Value = message.name;
-                    switch (message.sex)
+                    worksheet.Cells["A" + rowNum].Value = message.Id;
+                    worksheet.Cells["B" + rowNum].Value = message.Name;
+                    switch (message.Sex)
                     {
                         case 0:
                             worksheet.Cells["C" + rowNum].Value = "女";
@@ -340,7 +270,7 @@ namespace coursedesign.Controllers
                             worksheet.Cells["C" + rowNum].Value = "  ";
                             break;
                     }
-                    switch (message.education)
+                    switch (message.Education)
                     {
                         case 0:
                             worksheet.Cells["D" + rowNum].Value = "高中";
@@ -361,50 +291,39 @@ namespace coursedesign.Controllers
                             worksheet.Cells["D" + rowNum].Value = "无学历";
                             break;
                     }
-                    worksheet.Cells["E" + rowNum].Value = message.place;
-                    worksheet.Cells["F" + rowNum].Value = message.address;
-                    worksheet.Cells["G" + rowNum].Value = message.telephone;
-                    worksheet.Cells["H" + rowNum].Value = message.workage;
-                    worksheet.Cells["I" + rowNum].Value = message.salary;
-                    worksheet.Cells["J" + rowNum].Value = message.birth.ToString();
+                    worksheet.Cells["E" + rowNum].Value = message.Place;
+                    worksheet.Cells["F" + rowNum].Value = message.Address;
+                    worksheet.Cells["G" + rowNum].Value = message.Telephone;
+                    worksheet.Cells["H" + rowNum].Value = message.Workage;
+                    worksheet.Cells["I" + rowNum].Value = message.Salary;
+                    worksheet.Cells["J" + rowNum].Value = message.Birth.ToString();
                     rowNum++;
                 }
                 package.Save();
             }
             return Content("<script>alert('保存成功');history.go(-1);</script>");
         }
+
         public ActionResult ClearData()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
-            List<engineering> list = (from c in db.engineering                                 
+
+            List<Engineering> list = (from c in db.Engineering
                                       select c).ToList();
-            foreach(engineering e in list)
+            foreach (Engineering e in list)
             {
-                db.engineering.Remove(e);
+                db.Engineering.Remove(e);
             }
             db.SaveChanges();
             return Content("<script>alert('清除成功');window.location.href='../Home/Index';</script>");
         }
-
         public ActionResult UpLoadData()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
             return View();
         }
-     
+
         [HttpPost]
         public ActionResult UploadData(HttpPostedFileBase file)
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
             var fileName = file.FileName;
             var filePath = Server.MapPath(string.Format("~/{0}", "UpLoadExcel"));
             string path = Path.Combine(filePath, fileName);
@@ -416,85 +335,81 @@ namespace coursedesign.Controllers
             file.SaveAs(path);
             ExcelPackage.LicenseContext = LicenseContext.Commercial;
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            List<engineering> es = new List<engineering>();
+            List<Engineering> es = new List<Engineering>();
 
             using (ExcelPackage package = new ExcelPackage(new FileStream(path, FileMode.Open)))
             {
                 //TODO:做一个列表的判断
                 ExcelWorksheet sheet = package.Workbook.Worksheets[0];
                 //index从1开始
-                for(int row = 2;row<= sheet.Dimension.Rows;row++)
+                for (int row = 2; row <= sheet.Dimension.Rows; row++)
                 {
-                    engineering e = new engineering();
-                    for (int colunmn = 1;colunmn<=sheet.Dimension.Columns;colunmn++)
+                    Engineering e = new Engineering();
+                    for (int colunmn = 1; colunmn <= sheet.Dimension.Columns; colunmn++)
                     {
                         string s = sheet.Cells[1, colunmn].Value.ToString();
                         switch (s)
                         {
                             case "编号":
-                                e.id = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
+                                e.Id = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
                                 break;
                             case "姓名":
-                                e.name = sheet.Cells[row, colunmn].Value.ToString();
+                                e.Name = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
                             case "性别":
                                 if (sheet.Cells[row, colunmn].Value.ToString().Equals("男"))
-                                    e.sex = 1;
+                                    e.Sex = 1;
                                 else
-                                    e.sex = 0;
+                                    e.Sex = 0;
                                 break;
                             case "学历":
                                 if (sheet.Cells[row, colunmn].Value.ToString().Equals("高中"))
-                                    e.education = 0;
-                                else if(sheet.Cells[row, colunmn].Value.ToString().Equals("学士"))
-                                    e.education = 1;
+                                    e.Education = 0;
+                                else if (sheet.Cells[row, colunmn].Value.ToString().Equals("学士"))
+                                    e.Education = 1;
                                 else if (sheet.Cells[row, colunmn].Value.ToString().Equals("硕士"))
-                                    e.education = 2;
+                                    e.Education = 2;
                                 else if (sheet.Cells[row, colunmn].Value.ToString().Equals("博士"))
-                                    e.education = 3;
+                                    e.Education = 3;
                                 else if (sheet.Cells[row, colunmn].Value.ToString().Equals("其他"))
-                                    e.education = 4;
+                                    e.Education = 4;
                                 break;
                             case "籍贯":
-                                e.place = sheet.Cells[row, colunmn].Value.ToString();
+                                e.Place = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
                             case "地址":
-                                e.address = sheet.Cells[row, colunmn].Value.ToString();
+                                e.Address = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
                             case "电话":
-                                e.telephone = sheet.Cells[row, colunmn].Value.ToString();
+                                e.Telephone = sheet.Cells[row, colunmn].Value.ToString();
                                 break;
                             case "工龄":
-                                e.workage = sheet.Cells[row, colunmn].Value.ToString();
+                                e.Workage = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
                                 break;
                             case "工资":
-                                e.salary = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
+                                e.Salary = Convert.ToInt32(sheet.Cells[row, colunmn].Value.ToString());
                                 break;
                             case "出生日期":
-                                e.birth = Convert.ToDateTime(sheet.Cells[row, colunmn].Value.ToString()); 
+                                e.Birth = Convert.ToDateTime(sheet.Cells[row, colunmn].Value.ToString());
                                 break;
-                        }   
+                        }
                     }
                     es.Add(e);
                 }
                 this.TempData["list"] = es;
             }
-           
+
             return RedirectToAction("GetData");
         }
 
         public ActionResult InsertExcelInfo()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
-            List<engineering> es = (List < engineering >) this.TempData["list"];
+            List<Engineering> es = (List<Engineering>)this.TempData["list"];
             try
             {
-                foreach (engineering e in es)
+                foreach (Engineering e in es)
                 {
-                    db.engineering.Add(e);
+                    db.Engineering.Add(e);
                     db.Configuration.ValidateOnSaveEnabled = false;
                 }
                 db.SaveChanges();
@@ -507,70 +422,41 @@ namespace coursedesign.Controllers
                 return Content(ex.Message);
             }
         }
-
-
-
         public ActionResult GetData()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
             ViewData["UpList"] = this.TempData["list"];
             this.TempData["list"] = this.TempData["list"];
             return View();
         }
         public ActionResult ExitSys()
         {
-           
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('尚未登陆');window.location.href='../Home/Index';</script>");
-            }
-            else
-            {
-                Session["username"] = null;
-                return Content("<script>alert('退出成功');window.location.href='../Home/Index';</script>");
-            }
+            Session["username"] = null;
+            return Content("<script>alert('退出成功');window.location.href='../Home/Index';</script>");
         }
-
         [HttpGet]
         public ActionResult Modify()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-              }
             int id = Convert.ToInt32(Request.QueryString["Cid"]);
-            engineering engineering = (from e in db.engineering where id == e.id select e).SingleOrDefault();
+            Engineering engineering = (from e in db.Engineering where id == e.Id select e).SingleOrDefault();
             return View(engineering);
         }
         [HttpPost]
-        public ActionResult Modify(engineering model)
+        public ActionResult Modify(Engineering model)
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-            }
-            engineering e = db.engineering.Where(e1 => e1.id == model.id).ToList().FirstOrDefault();
+            Engineering e = db.Engineering.Where(e1 => e1.Id == model.Id).ToList().FirstOrDefault();
             e.SetValue(e, model);
-
-
+            db.Configuration.ValidateOnSaveEnabled = false;
             db.SaveChanges();
             db.Configuration.ValidateOnSaveEnabled = true;
             return RedirectToAction("EditData", "Home");
         }
         public ActionResult Remove()
         {
-            if (Session["username"] == null)
-            {
-                return Content("<script>alert('请先登录');window.location.href='../Home/Index';</script>");
-              }
             try
             {
                 int id = Convert.ToInt32(Request.QueryString["Cid"]);
-                engineering engineering = (from e in db.engineering where e.id == id select e).SingleOrDefault();
-                db.engineering.Remove(engineering);
+                Engineering engineering = (from e in db.Engineering where e.Id == id select e).SingleOrDefault();
+                db.Engineering.Remove(engineering);
                 db.SaveChanges();
                 return RedirectToAction("EditData", "Home");
             }
@@ -579,8 +465,5 @@ namespace coursedesign.Controllers
                 return RedirectToAction("EditData", "EditData");
             }
         }
-
-       
-
     }
 }

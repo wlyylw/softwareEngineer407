@@ -1,4 +1,4 @@
-﻿
+﻿@model CourseDesign.Models.Engineering
 @{
     ViewBag.Title = "ShowOrderData";
 }
@@ -24,22 +24,22 @@
                 <td></td>
                 <td></td>
             </tr>
-            @foreach (var a in ViewData["DataList"] as List<engineering>)
+            @foreach (var a in ViewData["DataList"] as List<CourseDesign.Models.Engineering>)
             {
                 <tr>
-                    <td>@a.id</td>
-                    <td>@a.name</td>
-                    <td>@a.sex</td>
-                    <td>@a.education</td>
-                    <td>@a.place</td>
-                    <td>@a.address</td>
-                    <td>@a.telephone</td>
-                    <td>@a.workage</td>
-                    <td>@a.salary</td>
-                    <td>@a.birth</td>
-                    <td>@Html.ActionLink("修改", "Modify", new { Cid = a.id })</td>
-                    <td>@Html.ActionLink("删除", "Remove", new { Cid = a.id })</td>
-                    <td>@Html.ActionLink("计算月薪", "CalculateData", new { Cid = a.id })</td>
+                    <td>@a.Id</td>
+                    <td>@a.Name</td>
+                    <td>@a.Sex</td>
+                    <td>@a.Education</td>
+                    <td>@a.Place</td>
+                    <td>@a.Address</td>
+                    <td>@a.Telephone</td>
+                    <td>@a.Workage</td>
+                    <td>@a.Salary</td>
+                    <td>@a.Birth</td>
+                    <td>@Html.ActionLink("修改", "Modify", new { Cid = a.Id })</td>
+                    <td>@Html.ActionLink("删除", "Remove", new { Cid = a.Id })</td>
+                    <td>@Html.ActionLink("计算月薪", "CalculateData", new { Cid = a.Id })</td>
 
                 </tr>
             }
