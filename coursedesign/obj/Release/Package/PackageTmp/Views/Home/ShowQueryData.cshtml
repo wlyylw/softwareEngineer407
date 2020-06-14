@@ -1,0 +1,66 @@
+﻿@model CourseDesign.Models.Engineering
+@{
+    ViewBag.Title = "查询结果";
+}
+<style>
+    table, table tr th, table tr td {
+        border: 1px solid #0094ff;
+    }
+
+    table {
+        width: 600px;
+        text-align: center;
+        border-collapse: collapse;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>编号</td>
+            <td>姓名</td>
+            <td>性别</td>
+            <td>学历</td>
+            <td>籍贯</td>
+            <td>地址</td>
+            <td>电话</td>
+            <td>工龄</td>
+            <td>工资</td>
+            <td>出生日期</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var a in ViewData["QueryList"] as List<CourseDesign.Models.Engineering>)
+        {
+            <tr>
+                <td>@a.Id</td>
+                <td>@a.Name</td>
+                @if (a.Sex == 1)
+                {
+                    <td>男</td>
+                }
+                else
+                {
+                    <td>女</td>
+                }
+                <td>@a.Education</td>
+                <td>@a.Place</td>
+                <td>@a.Address</td>
+                <td>@a.Telephone</td>
+                <td>@a.Workage</td>
+                <td>@a.Salary</td>
+                <td>@a.Birth</td>
+                <td>@Html.ActionLink("修改", "Modify", new { Cid = a.Id })</td>
+                <td>@Html.ActionLink("删除", "Remove", new { Cid = a.Id })</td>
+                <td>@Html.ActionLink("计算月薪", "CalculateData", new { Cid = a.Id })</td>
+            </tr>
+        }
+    </table>
+    <br />
+    <br />
+    <br />
+    <br />
+    @Html.ActionLink("返回", "QueryData", "Home")
+}
+

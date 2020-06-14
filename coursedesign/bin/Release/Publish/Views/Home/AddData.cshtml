@@ -1,0 +1,68 @@
+﻿@model CourseDesign.Models.Engineering
+@{
+    ViewBag.Title = "AddData";
+}
+<h2>添加工程师信息</h2>
+<br />
+<br />
+<br />
+@using (Html.BeginForm("AddData", "Home", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <text>编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Id);
+    @Html.ValidationMessageFor(model => model.Id)
+    <br />
+    <br />
+    <text>姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Name);
+    @Html.ValidationMessageFor(model => model.Name)
+    <br />
+    <br />
+    <text>性别&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Sex);
+    <text>(男：1&nbsp;&nbsp;女：0)</text>
+    @Html.ValidationMessageFor(model => model.Sex)
+    <br />
+    <br />
+    <text>学历&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Education);
+    @Html.ValidationMessageFor(model => model.Education)
+    <br />
+    <br />
+    <text>籍贯&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Place);
+    @Html.ValidationMessageFor(model => model.Place)
+    <br />
+    <br />
+    <text>地址&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Address);
+    @Html.ValidationMessageFor(model => model.Address)
+    <br />
+    <br />
+    <text>电话&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Telephone);
+    @Html.ValidationMessageFor(model => model.Telephone)
+    <br />
+    <br />
+    <text>工龄&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Workage);
+    @Html.ValidationMessageFor(model => model.Workage)
+    <br />
+    <br />
+    <text>工资&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Salary);
+    @Html.ValidationMessageFor(model => model.Salary)
+    <br />
+    <br />
+    <text>出生日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</text>
+    @Html.TextBoxFor(model => model.Birth);
+    @Html.ValidationMessageFor(model => model.Birth)
+
+    <br />
+    <br />
+    <input type="submit" value="添加" />
+
+}
+
+

@@ -44,7 +44,7 @@ namespace CourseDesign.Models
         [RegularExpression(@"^(([1-4][0-9]?)|50)$", ErrorMessage = "*工龄超限")]
         public int Workage { get; set; }
 
-        [RegularExpression(@"^[^0]$", ErrorMessage = "*工资错误")]
+        //[RegularExpression(@"^[^0]*$", ErrorMessage = "*工资错误")]
         public int Salary { get; set; }
         public void SetValue(Engineering e, Engineering model)
         {

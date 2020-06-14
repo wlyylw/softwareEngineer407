@@ -1,0 +1,21 @@
+﻿@model CourseDesign.Models.Engineering
+@{
+    ViewBag.Title = "查询工程师资料";
+}
+
+<h2>查询工程师资料</h2>
+
+
+
+@using (Html.BeginForm("ShowQueryData", "Home", FormMethod.Post))
+{
+    <tr>
+        <td>查询类型：</td>
+        <td>
+            @Html.DropDownList("queryOption", ViewBag.list as SelectList, " ")
+            &nbsp;&nbsp;&nbsp;&nbsp;@Html.TextBox("queryType")
+        </td>
+    </tr>
+    <input type="submit" value="查询" />
+
+}
